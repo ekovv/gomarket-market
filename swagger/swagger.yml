@@ -1,0 +1,65 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: API для магазина
+paths:
+  /v1/user/register:
+    post:
+      summary: Регистрация нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Пользователь успешно зарегистрирован и аутентифицирован
+          headers:
+            parameters:
+              $ref: '#/components/headers/AuthToken'
+        '400':
+          description: Неверный формат запроса
+        '409':
+          description: Логин уже занят
+        '500':
+          description: Внутренняя ошибка сервера
+  /v1/user/login:
+    post:
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Пользователь успешно аутентифицирован
+          headers:
+            parameters:
+              $ref: '#/components/headers/AuthToken'
+        '400':
+          description: Неверный формат запроса
+        '401':
+          description: Неверная пара логин/пароль
+        '500':
+          description: Внутренняя ошибка сервера
+
+
+
+components:
+  headers:
+    AuthToken:
+      description: Токен аутентификации
+      schema:
+        type: string
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          example: password
